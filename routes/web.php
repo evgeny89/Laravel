@@ -16,3 +16,15 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('news/{num?}', function ($num = 1) {
+    return view('news', ['num' => $num]);
+});
+
+Route::get('/user/{name?}', function ($name = 'Guest') {
+    return view('user', ['name' => $name]);
+})->whereAlphaNumeric('name');
+
+Route::get('/info', function () {
+    return view('info');
+});
