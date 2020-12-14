@@ -41,16 +41,7 @@
 
         a {
             color: inherit;
-            text-decoration: inherit;
-            transition: color .3s
-        }
-
-        a:hover {
-            color: #fff
-        }
-
-        li {
-            list-style: none;
+            text-decoration: inherit
         }
 
         svg, video {
@@ -170,9 +161,9 @@
             margin-left: 3rem
         }
 
-        .my-8 {
-            margin: 2rem 0
-         }
+        .mb-12 {
+            margin-bottom: 3rem
+        }
 
         .-mt-px {
             margin-top: -1px
@@ -180,6 +171,14 @@
 
         .max-w-6xl {
             max-width: 72rem
+        }
+
+        .w-100 {
+            width: 100%;
+        }
+
+        .border:hover {
+            border: 1px solid;
         }
 
         .min-h-screen {
@@ -299,8 +298,12 @@
             grid-template-columns:repeat(1, minmax(0, 1fr))
         }
 
-        .d-b {
+        form * {
             display: block;
+            background-color: inherit;
+            color: #a0aec0;
+            border-bottom: 1px solid #718096;
+            outline: none;
         }
 
         @media (min-width: 640px) {
@@ -412,23 +415,6 @@
 </head>
 <body class="antialiased">
 <div class="relative grid items-top min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0 text-gray-500">
-    @if (Route::has('login'))
-        <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
-            @auth
-                <a href="{{ url('/home') }}" class="text-sm text-gray-700 underline">Home</a>
-            @else
-                <a href="{{ route('login') }}" class="text-sm text-gray-700 underline">Login</a>
-
-                @if (Route::has('register'))
-                    <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 underline">Register</a>
-                @endif
-            @endauth
-        </div>
-    @endif
-
-    <header class="dark:bg-gray-800">
-        <h1 class="max-w-6xl mx-auto sm:px-6 lg:px-8">LOGO</h1>
-    </header>
     <div class="flex">
         <aside class="w-auto">
             <div>
@@ -445,7 +431,7 @@
         </main>
     </div>
     <footer class="dark:bg-gray-800">
-       <p class="max-w-6xl mx-auto text-center">Пилюгин Евгений 2020 &copy;</p>
+        <p class="max-w-6xl mx-auto text-center">Пилюгин Евгений 2020 &copy;</p>
     </footer>
 </div>
 </body>
