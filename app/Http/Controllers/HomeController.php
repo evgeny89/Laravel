@@ -15,7 +15,6 @@ class HomeController extends Controller
 
     public function index()
     {
-        $this->data['title'] = 'главная';
         $this->data['news'] = Data::getLastThreeNews();
 
         return view('index', $this->data);

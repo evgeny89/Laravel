@@ -1,4 +1,5 @@
 @extends('layouts.main')
+@section('title', 'О нас')
 
 @section('content')
     <div class="shadow">

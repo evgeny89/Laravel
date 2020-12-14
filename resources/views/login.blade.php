@@ -1,4 +1,5 @@
 @extends('layouts.empty')
+@section('title', 'Авторизация')
 
 @section('content')
     <div class="my-8 overflow-hidden shadow sm:rounded-lg p-6">

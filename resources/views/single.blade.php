@@ -1,4 +1,5 @@
 @extends('layouts.main')
+@section('title', $news['title'])
 
 @section('content')
     <div class="my-8 overflow-hidden shadow sm:rounded-lg">

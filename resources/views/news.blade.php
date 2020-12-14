@@ -1,4 +1,5 @@
 @extends('layouts.main')
+@section('title', 'Список новостей')
 
 @section('content')
     <div class="my-8 sm:rounded-lg">
