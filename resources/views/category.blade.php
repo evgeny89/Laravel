@@ -1,6 +1,7 @@
 @extends('layouts.main')
 
 @section('content')
+    <h3>Новости из категории: {{ $title }}</h3>
     <div class="my-8 sm:rounded-lg">
         @foreach ($news as $new)
             <div class="p-6 shadow mt-8">
