@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Data;
+use App\Models\NewsModel;
 use Illuminate\Http\Request;
 
 class NewsController extends Controller
@@ -10,37 +10,31 @@ class NewsController extends Controller
     private $data;
 
     public function __construct() {
-        $this->data['menu'] = Data::getMenu();
+        $this->data = new NewsModel();
     }
 
     public function index()
     {
-        $this->data['news'] = Data::GetAllNews();
-
-        return view('news', $this->data);
+        return view('news.news', ['news' => $this->data->getAllNews()]);
     }
 
     public function getNews($id)
     {
-        $this->data['news'] = Data::getNews($id);
-
-        return view('single', $this->data);
+        return view('news.single', ['news' => $this->data->getNews($id)]);
     }
 
     public function getCategories()
     {
-        $this->data['categories'] = Data::getCategories();
-
-        return view('categories', $this->data);
+        return view('news.categories', ['categories' => $this->data->data->getCategories()]);
     }
 
     public function getCategory($id)
     {
-        $category = Data::getCategory($id);
+        $category = $this->data->getCategory($id);
 
-        $this->data['name'] = $category['name'];
-        $this->data['news'] = Data::getNewsInCategory($category['id']);
-
-        return view('category', $this->data);
+        return view('news.category', [
+            'name' => $category['name'],
+            'news' => $this->data->getNewsInCategory($category['id'])
+        ]);
     }
 }

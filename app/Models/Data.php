@@ -6,7 +6,37 @@ namespace App\Models;
 
 class Data
 {
-    public static function getUsers(): array
+    public static function getMenu(): array
+    {
+        return [
+            [
+                'name' => 'главная',
+                'path' => '/'
+            ],
+            [
+                'name' => 'новости',
+                'path' => '/news'
+            ],
+            [
+                'name' => 'категории',
+                'path' => '/news/categories'
+            ],
+            [
+                'name' => 'добавить новость',
+                'path' => '/news/add'
+            ],
+            [
+                'name' => 'о нас',
+                'path' => '/about'
+            ],
+            [
+                'name' => 'вход',
+                'path' => '/auth'
+            ]
+        ];
+    }
+
+    public function getUsers(): array
     {
         return [
             [
@@ -54,37 +84,7 @@ class Data
         ];
     }
 
-    public static function getMenu(): array
-    {
-        return [
-            [
-                'name' => 'главная',
-                'path' => '/'
-            ],
-            [
-                'name' => 'новости',
-                'path' => '/news'
-            ],
-            [
-                'name' => 'категории',
-                'path' => '/news/categories'
-            ],
-            [
-                'name' => 'добавить новость',
-                'path' => '/news/add'
-            ],
-            [
-                'name' => 'о нас',
-                'path' => '/about'
-            ],
-            [
-                'name' => 'вход',
-                'path' => '/auth'
-            ]
-        ];
-    }
-
-    public static function getCategories(): array
+    public function getCategories(): array
     {
         return [
             [
@@ -110,9 +110,9 @@ class Data
         ];
     }
 
-    public static function GetAllNews(): array
+    public function GetAllNews(): array
     {
-        $news = [
+        return [
             [
                 'id' => 1,
                 'category_id' => 2,
@@ -146,61 +146,5 @@ class Data
                 'author_id' => 4
             ]
         ];
-
-        $arrNews = array_map('self::changeIdToText', $news);
-
-        return array_reverse($arrNews);
-    }
-
-    public static function getUser($id): array
-    {
-        $users = self::getUsers();
-
-        return self::searchInArray($users, $id);
-    }
-
-    public static function getNews($id): array
-    {
-        $news = self::getAllNews();
-
-        return self::searchInArray($news, $id);
-    }
-
-    public static function getCategory($id)
-    {
-        $categories = self::getCategories();
-
-        return self::searchInArray($categories, $id);
-    }
-
-    public static function getLastThreeNews()
-    {
-        return array_slice(self::GetAllNews(), -0, 3);
-
-    }
-
-    public static function getNewsInCategory($id)
-    {
-        return array_filter(self::GetAllNews(), function($news) use ($id) {
-           return $news['category_id']['id'] === $id;
-        });
-    }
-
-    private static function changeIdToText($arr)
-    {
-        $arr['author_id'] = self::getUser($arr['author_id'])['name'];
-        $arr['category_id'] = self::getCategory($arr['category_id']);
-
-        return $arr;
-    }
-
-    private static function searchInArray($arr, $search)
-    {
-        foreach ($arr as $value) {
-            if ($value['id'] == $search) {
-                return $value;
-            }
-        }
-        return null;
     }
 }

@@ -14,18 +14,22 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::get('/', [HomeController::class, 'index']);
 
-Route::get('news', [NewsController::class, 'index']);
+Route::group([
+    'prefix' => 'news'
+],
+function () {
+    Route::get('/', [NewsController::class, 'index']);
 
-Route::get('news/{num}', [NewsController::class, 'getNews'])
-    ->whereNumber('num');
+    Route::get('/{num}', [NewsController::class, 'getNews'])
+        ->whereNumber('num');
 
-Route::get('news/categories', [NewsController::class, 'getCategories']);
+    Route::get('/categories', [NewsController::class, 'getCategories']);
 
-Route::get('news/category/{num}', [NewsController::class, 'getCategory'])
-    ->whereNumber('num');
+    Route::get('/category/{num}', [NewsController::class, 'getCategory'])
+        ->whereNumber('num');
+});
 
 Route::get('/about', function () {
    return view('about', [
