@@ -37,4 +37,9 @@ class NewsController extends Controller
             'news' => $this->data->getNewsInCategory($category['id'])
         ]);
     }
+
+    public function saveNews()
+    {
+        return view('news.add', ['save' => 1]);
+    }
 }

@@ -29,19 +29,19 @@ function () {
 
     Route::get('/category/{num}', [NewsController::class, 'getCategory'])
         ->whereNumber('num');
+
+    Route::get('/add', function () {
+        return view('news.add');
+    });
+
+    Route::post('/save', [NewsController::class, 'saveNews']);
 });
 
 Route::get('/about', function () {
-   return view('about', [
-       'title' => 'О нас',
-       'menu' => \App\Models\Data::getMenu()
-   ]) ;
+   return view('about') ;
 });
 
 Route::get('/auth', function () {
-    return view('login', [
-        'title' => 'Log In',
-        'menu' => \App\Models\Data::getMenu()
-    ]);
+    return view('login');
 });
 
