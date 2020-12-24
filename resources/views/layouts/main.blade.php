@@ -440,8 +440,7 @@
             </div>
         </aside>
         <main class="max-w-6xl mx-auto">
-            @section('content')
-            @show
+            @yield('content')
         </main>
     </div>
     <footer class="dark:bg-gray-800">
