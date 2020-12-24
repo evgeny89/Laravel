@@ -15,15 +15,13 @@ class Data
             ],
             [
                 'name' => 'новости',
-                'path' => '/news'
-            ],
-            [
-                'name' => 'категории',
-                'path' => '/news/categories'
-            ],
-            [
-                'name' => 'добавить новость',
-                'path' => '/news/add'
+                'path' => '/news',
+                'child' => [
+                    [
+                        'name' => 'категории',
+                        'path' => '/news/categories'
+                    ]
+                ]
             ],
             [
                 'name' => 'о нас',
@@ -32,6 +30,22 @@ class Data
             [
                 'name' => 'вход',
                 'path' => '/auth'
+            ],
+            [
+                'name' => 'admin',
+                'path' => '/admin',
+                'child' => [
+                    [
+                        'name' => 'добавить новость',
+                        'path' => '/admin/news/add',
+                        'parent' => 'admin'
+                    ],
+                    [
+                        'name' => 'добавить категорию',
+                        'path' => '/admin/category/add',
+                        'parent' => 'admin'
+                    ]
+                ]
             ]
         ];
     }
