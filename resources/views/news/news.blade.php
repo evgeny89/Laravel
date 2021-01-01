@@ -3,14 +3,16 @@
 
 @section('content')
     <div class="p-4 shadow mb-5">
-        @foreach ($news as $new)
+        @forelse($news as $new)
             <div class="p-3 shadow mb-5">
-                <h4 class="d-flex justify-content-between mb-3"><a href="news/{{ $new['id'] }}" class="nav-link">{{ $new['title'] }}</a> <span>{{ $new['date'] }}</span></h4>
-                <p class="p-4 text-truncate fs-3">{{ $new['text'] }}</p>
+                <h4 class="d-flex justify-content-between mb-3"><a href="news/{{ $new->id }}" class="nav-link">{{ $new->title }}</a> <span>{{ $new->created_at }}</span></h4>
+                <p class="p-4 text-truncate fs-3">{{ $new->description }}</p>
                 <div class="d-flex justify-content-between">
-                    <p class="ms-3">автор: {{ $new['author_id'] }}</p><span class="ms-5">категория: <a href="{{ $new['category_id']['path'] }}">{{ $new['category_id']['name'] }}</a></span>
+                    <p class="ms-3">автор: {{ $new->author_id }}</p><span class="ms-5">категория: <a href="/news/categories/{{ $new->category_id }}">{{ $new->category->name }}</a></span>
                 </div>
             </div>
-        @endforeach
+        @empty
+            <div class="p-3 shadow mb-5">Новостей нет</div>
+        @endforelse
     </div>
 @endsection

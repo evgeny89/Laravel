@@ -2,39 +2,44 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\News;
 use Illuminate\Http\Request;
 
 class NewsController extends Controller
 {
-    private $data;
-
-    public function __construct() {
-        $this->data = new News();
-    }
-
     public function index()
     {
-        return view('news.news', ['news' => $this->data->getAllNews()]);
+        return view('news.news', [
+            'news' => News::query()
+                ->where('status','published')
+                ->get()
+        ]);
     }
 
     public function getNews($id)
     {
-        return view('news.single', ['news' => $this->data->getNews($id)]);
+        return view('news.single', [
+            'news' => News::query()
+                ->where('status','published')
+                ->find($id)
+        ]);
     }
 
     public function getCategories()
     {
-        return view('news.categories', ['categories' => $this->data->data->getCategories()]);
+        return view('news.categories', ['categories' => Category::query()->get()]);
     }
 
     public function getCategory($id)
     {
-        $category = $this->data->getCategory($id);
-
         return view('news.category', [
-            'name' => $category['name'],
-            'news' => $this->data->getNewsInCategory($category['id'])
+            'category' => Category::query()
+                ->find($id),
+            'news' => News::query()
+                ->where('status','published')
+                ->where('category_id', $id)
+                ->get()
         ]);
     }
 }

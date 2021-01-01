@@ -30,7 +30,7 @@ function () {
 
     Route::get('/categories', [NewsController::class, 'getCategories']);
 
-    Route::get('/category/{num}', [NewsController::class, 'getCategory'])
+    Route::get('/categories/{num}', [NewsController::class, 'getCategory'])
         ->whereNumber('num');
 });
 
@@ -39,15 +39,27 @@ Route::group([
    'prefix' => 'admin'
 ],
 function() {
-    Route::get('/', [AdminController::class, 'index']);
+    Route::get('/{msg?}', [AdminController::class, 'index']);
 
-    Route::get('/news/add', [AdminController::class, 'addNews']);
+    Route::get('/news/add/{msg?}', [AdminController::class, 'addNews']);
 
     Route::post('/save', [AdminController::class, 'saveNews']);
 
     Route::get('/category/add', [AdminController::class, 'addCategory']);
 
     Route::post('/saveCat', [AdminController::class, 'saveCategory']);
+
+    Route::get('delCategory/{id}/{type?}', [AdminController::class, 'delCategory']);
+
+    Route::get('delNews/{id}/{type?}', [AdminController::class, 'delNews']);
+
+    Route::get('restore/{id}', [AdminController::class, 'restore']);
+
+    Route::get('edit/{id}', [AdminController::class, 'editNews']);
+
+    Route::post('edit/{id}', [AdminController::class, 'saveEditNews']);
+
+    Route::get('publish/{id}/{status?}', [AdminController::class, 'publish']);
 });
 
 Route::match(['GET', 'POST'], '/auth', [UserController::class, 'login']);
