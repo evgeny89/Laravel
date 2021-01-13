@@ -7,11 +7,12 @@
             <h3 class="text-center mb-5">{{ $status }}</h3>
         @endisset
         @if(count($categories) > 0)
-            <form method="POST" action="/admin/save" class="col-4">
+            <form method="POST" action="/admin/save" class="col-8">
                 @csrf
+                <input type="hidden" name="author_id" value="{{ $author_id }}">
                 <div class="form-group">
                     <label for="category">Категория:</label>
-                    <select name="category"
+                    <select name="category_id"
                             class="form-control text-white mb-3 bg-transparent border-0 shadow-lg bg-gradient"
                             id="category">
                         @foreach($categories as $category)
@@ -36,8 +37,8 @@
                 <div class="form-group">
                     <label for="news">Текст:</label>
                     <textarea class="form-control text-white mb-4 bg-transparent border-0 shadow-lg bg-gradient"
-                              name="news"
-                              rows="5" id="news">{{ old('news') }}</textarea>
+                              name="description"
+                              rows="10" id="news">{{ old('news') }}</textarea>
                 </div>
                 <button class="p-2 w-25 btn btn-secondary bg-gradient d-block m-auto" type="submit">Save</button>
             </form>

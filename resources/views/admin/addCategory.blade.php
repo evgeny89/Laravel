@@ -10,7 +10,7 @@
                     <div class="d-flex align-items-center">
                         <a href="/admin/delCategory/{{ $category->id }}" class="nav-link badge bg-primary">delete soft</a>
                         <a href="/admin/delCategory/{{ $category->id }}/1" class="nav-link badge bg-primary mx-3">delete hard</a>
-                        <span class="badge bg-primary badge-pill">{{ $category->news()->count() }}</span>
+                        <span class="badge bg-primary badge-pill">{{ $category->news_count }}</span>
                     </div>
                 </li>
             @endforeach

@@ -8,13 +8,16 @@ use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
+    private $pagination_value = 5;
+
     public function index($msg = null)
     {
         return view('admin.index', [
             'news' => News::withTrashed()
-                ->orderByDesc('status')
+                ->with('category')
+                ->orderBy('status')
                 ->orderByDesc('updated_at')
-                ->get(),
+                ->paginate($this->pagination_value),
             'status' => $msg
         ]);
     }
@@ -22,126 +25,84 @@ class AdminController extends Controller
     public function addNews($msg = null)
     {
         return view('admin.addNews', [
-            'categories' => Category::query()->get(),
-            'status' => $msg
+            'categories' => Category::get(),
+            'status' => $msg,
+            'author_id' => rand(1, 10)
         ]);
     }
 
     public function addCategory($msg = null)
     {
         return view('admin.addCategory', [
-            'categories' => Category::query()->get(),
+            'categories' => Category::withCount('news')->get(),
             'status' => $msg
         ]);
     }
 
-    public function saveNews(Request $request, $data = []): \Illuminate\Http\RedirectResponse
+    public function saveNews(Request $request): \Illuminate\Http\RedirectResponse
     {
-        if ($request->request->get('title') && $request->request->get('news')) {
-            $news = $request->request->all();
-
-            News::query()->create([
-                'category_id' => $news['category'],
-                'source' => $news['source'],
-                'title' => $news['title'],
-                'description' => $news['news'],
-                'author_id' => 1,
-            ]);
+        if ($request->request->get('title') && $request->request->get('description')) {
+            News::create($request->all());
 
             return redirect()->action([AdminController::class, 'index'], ['msg' => 'Сохранено']);
-        } else {
-            return back()->withInput();
         }
+
+        return back()->withInput();
     }
 
-    public function saveCategory(Request $request, $data = []): \Illuminate\Http\RedirectResponse
+    public function saveCategory(Request $request): \Illuminate\Http\RedirectResponse
     {
         if ($request->request->get('name')) {
-            Category::query()->create([
+            Category::create([
                 'name' => $request->name
             ]);
 
             return redirect()->action([AdminController::class, 'addCategory'], ['msg' => 'Сохранено']);
-        } else {
-            return back()->withInput();
         }
+
+        return back()->withInput();
     }
 
-    public function saveEditNews(Request $request, $id)
+    public function saveEditNews(Request $request, News $news): \Illuminate\Http\RedirectResponse
     {
-        $news = News::query()->find($id);
         $news->update($request->all());
 
         return redirect()->action([AdminController::class, 'index'], ['msg' => 'Изменено']);
     }
 
-    public function editNews($id)
+    public function editNews(News $news)
     {
         return view('admin.edit', [
-           'categories' => Category::query()->get(),
-           'news' => News::query()->find($id)
+           'categories' => Category::get(),
+           'news' => $news
         ]);
     }
 
-    public function publish($id, $status = 0)
+    public function publish(News $news, $status = 0): \Illuminate\Http\RedirectResponse
     {
-        if($status) {
-            $status = 'added';
-        } else {
-            $status = 'published';
-        }
-        News::query()->find($id)->update(['status' => $status]);
+        News::publishNews($news, $status);
+
         return redirect()->action([AdminController::class, 'index'], ['msg' => 'Статус изменен']);
     }
 
-    public function restore($id)
+    public function restore(News $news): \Illuminate\Http\RedirectResponse
     {
-        News::withTrashed()->find($id)->restore();
+        $news->restore();
+
         return redirect()->action([AdminController::class, 'index'], ['msg' => 'Востановлено']);
     }
 
-    public function delNews($id, $type = 0): \Illuminate\Http\RedirectResponse
+    public function delNews(News $news, $type = 0): \Illuminate\Http\RedirectResponse
     {
-        if ($type) {
-            $this->forceDeleteNews($id);
-            $msg = 'Удалено полностью';
-        } else {
-            $this->softDeleteNews($id);
-            $msg = 'Удалено';
-        }
+        $msg = News::deleteNews($news, $type);
 
         return redirect()->action([AdminController::class, 'index'], ['msg' => $msg]);
     }
 
-    public function delCategory($id, $type = 0): \Illuminate\Http\RedirectResponse
+    public function delCategory(Category $category, $type = 0): \Illuminate\Http\RedirectResponse
     {
-        if ($type) {
-            array_map(function ($item) {
-                $this->forceDeleteNews($item['id']);
-            }, Category::query()->find($id)->news->toArray());
+        $msg = Category::deleteCategory($category, $type);
 
-            Category::query()->find($id)->forceDelete();
-            $msg = 'Удалено полностью';
-        } else {
-            array_map(function ($item) {
-                $this->softDeleteNews($item['id']);
-            }, Category::query()->find($id)->news->toArray());
-
-            Category::query()->find($id)->delete();
-            $msg = 'Удалено';
-        }
         return redirect()->action([AdminController::class, 'addCategory'], ['msg' => $msg]);
-    }
-
-    private function softDeleteNews($id): void
-    {
-        $news = News::query()->find($id);
-        $news->delete();
-    }
-
-    private function forceDeleteNews($id)
-    {
-        $news = News::query()->find($id);
-        $news->forceDelete();
     }
 }

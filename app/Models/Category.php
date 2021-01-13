@@ -31,6 +31,21 @@ class Category extends Model
 
     protected $fillable = ['name'];
 
+    public static function deleteCategory(Category $category, $type): string
+    {
+        News::deleteNewsInCategory($category, $type);
+
+        if ($type) {
+            $category->forceDelete();
+            $msg = 'Удалено полностью';
+        } else {
+            $category->delete();
+            $msg = 'Удалено';
+        }
+
+        return $msg;
+    }
+
     public function news(): object
     {
         return $this->hasMany(News::class, 'category_id')

@@ -16,55 +16,64 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', [HomeController::class, 'index']);
+Route::get('/', [HomeController::class, 'index'])
+    ->name('main');
 
 
 Route::group([
-    'prefix' => 'news'
+    'prefix' => 'news',
+    'as' => 'news::'
 ],
-function () {
-    Route::get('/', [NewsController::class, 'index']);
+    function () {
+        Route::get('/', [NewsController::class, 'index'])
+            ->name('index');
 
-    Route::get('/{num}', [NewsController::class, 'getNews'])
-        ->whereNumber('num');
+        Route::get('/{news}', [NewsController::class, 'getNews'])
+            ->whereNumber('news')
+            ->name('news');
 
-    Route::get('/categories', [NewsController::class, 'getCategories']);
+        Route::get('/categories', [NewsController::class, 'getCategories'])
+            ->name('categories');
 
-    Route::get('/categories/{num}', [NewsController::class, 'getCategory'])
-        ->whereNumber('num');
-});
+        Route::get('/categories/{category}', [NewsController::class, 'getCategory'])
+            ->whereNumber('category')
+            ->name('category');
+    });
 
 
 Route::group([
-   'prefix' => 'admin'
+    'prefix' => 'admin',
+    'as' => 'admin::'
 ],
-function() {
-    Route::get('/{msg?}', [AdminController::class, 'index']);
+    function () {
+        Route::get('/{msg?}', [AdminController::class, 'index']);
 
-    Route::get('/news/add/{msg?}', [AdminController::class, 'addNews']);
+        Route::get('/news/add/{msg?}', [AdminController::class, 'addNews']);
 
-    Route::post('/save', [AdminController::class, 'saveNews']);
+        Route::post('/save', [AdminController::class, 'saveNews']);
 
-    Route::get('/category/add', [AdminController::class, 'addCategory']);
+        Route::get('/category/add', [AdminController::class, 'addCategory']);
 
-    Route::post('/saveCat', [AdminController::class, 'saveCategory']);
+        Route::post('/saveCat', [AdminController::class, 'saveCategory']);
 
-    Route::get('delCategory/{id}/{type?}', [AdminController::class, 'delCategory']);
+        Route::get('delCategory/{category}/{type?}', [AdminController::class, 'delCategory']);
 
-    Route::get('delNews/{id}/{type?}', [AdminController::class, 'delNews']);
+        Route::get('delNews/{news}/{type?}', [AdminController::class, 'delNews']);
 
-    Route::get('restore/{id}', [AdminController::class, 'restore']);
+        Route::get('restore/{news}', [AdminController::class, 'restore']);
 
-    Route::get('edit/{id}', [AdminController::class, 'editNews']);
+        Route::get('edit/{news}', [AdminController::class, 'editNews']);
 
-    Route::post('edit/{id}', [AdminController::class, 'saveEditNews']);
+        Route::post('edit/{news}', [AdminController::class, 'saveEditNews']);
 
-    Route::get('publish/{id}/{status?}', [AdminController::class, 'publish']);
-});
+        Route::get('publish/{news}/{status?}', [AdminController::class, 'publish']);
+    });
 
-Route::match(['GET', 'POST'], '/auth', [UserController::class, 'login']);
+Route::match(['GET', 'POST'], '/login', [UserController::class, 'login']);
 
-Route::get('/user/{name?}', [UserController::class, 'index'])
+Route::get('/logout', [UserController::class, 'logout']);
+
+Route::get('/user/{user}', [UserController::class, 'index'])
     ->name('user');
 
 Route::get('/about', function () {

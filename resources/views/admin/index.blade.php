@@ -44,4 +44,7 @@
             <div class="p-3 shadow mb-5">Новостей нет</div>
         @endforelse
     </div>
+    <div class="mb-5 pb-5">
+        {{ $news->links('vendor.pagination.bootstrap-4') }}
+    </div>
 @endsection
