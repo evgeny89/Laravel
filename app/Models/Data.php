@@ -6,50 +6,6 @@ namespace App\Models;
 
 class Data
 {
-    public static function getMenu(): array
-    {
-        return [
-            [
-                'name' => 'главная',
-                'path' => '/'
-            ],
-            [
-                'name' => 'новости',
-                'path' => '/news',
-                'child' => [
-                    [
-                        'name' => 'категории',
-                        'path' => '/news/categories'
-                    ]
-                ]
-            ],
-            [
-                'name' => 'о нас',
-                'path' => '/about'
-            ],
-            [
-                'name' => 'вход',
-                'path' => '/auth'
-            ],
-            [
-                'name' => 'admin',
-                'path' => '/admin',
-                'child' => [
-                    [
-                        'name' => 'добавить новость',
-                        'path' => '/admin/news/add',
-                        'parent' => 'admin'
-                    ],
-                    [
-                        'name' => 'добавить категорию',
-                        'path' => '/admin/category/add',
-                        'parent' => 'admin'
-                    ]
-                ]
-            ]
-        ];
-    }
-
     public function getUsers(): array
     {
         return [

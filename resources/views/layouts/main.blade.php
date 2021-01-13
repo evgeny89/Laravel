@@ -40,17 +40,17 @@
                 <div class="dropdown">
                     <li class="nav-item btn-group">
                         <a class="nav-link btn btn-secondary
-                            {{ \Illuminate\Support\Facades\Request::is(($item['path'] !== '/' ? substr($item['path'], 1) : $item['path'])) ? 'active bg-gradient bg-primary' : '' }}"
-                            href="{{ $item['path'] }}">{{ $item['name'] }}</a>
-                        @isset($item['child'])
+                            {{ $request::is(($item->path !== '/' ? substr($item->path, 1) : $item->path)) ? 'active bg-gradient bg-primary' : '' }}"
+                            href="{{ $item->path }}">{{ $item->name }}</a>
+                        @isset($item->child)
                             <button class="btn btn-secondary dropdown-toggle dropdown-toggle-split" type="button"
                                     id="dropdownMenuButton"
                                     data-bs-toggle="dropdown" aria-expanded="false">
                             </button>
                             <ul class="bg-secondary dropdown-menu dropdown-menu-end">
-                                @foreach ($item['child'] as $subItem)
+                                @foreach ($item->child as $subItem)
                                     <li class="dropdown-item bg-secondary">
-                                        <a class="nav-link btn btn-secondary {{ \Illuminate\Support\Facades\Request::is(substr($subItem['path'], 1)) ? 'active bg-gradient bg-primary' : '' }}" href="{{ $subItem['path'] }}">{{ $subItem['name'] }}</a>
+                                        <a class="nav-link btn btn-secondary {{ $request::is(substr($subItem->path, 1)) ? 'active bg-gradient bg-primary' : '' }}" href="{{ $subItem->path }}">{{ $subItem->name }}</a>
                                     </li>
                                 @endforeach
                             </ul>
