@@ -2,5 +2,5 @@
 @section('title', $name)
 
 @section('content')
-    <h1 class="text-gray-400">Hello {{ $name }}</h1>
+    <h1 class="p-3 shadow">Hello {{ $name }}</h1>
 @endsection

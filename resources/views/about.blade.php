@@ -2,17 +2,17 @@
 @section('title', 'О нас')
 
 @section('content')
-    <div class="shadow">
-        <p class="p-6">
+    <div class="shadow p-5">
+        <p class="p-2 fs-3">
             Учебный проект агрегатора новостей на фреймверке Laravel.
-            <span class="d-b">
+            <span class="fst-italic">
                 группа : web-384.
             </span>
         </p>
-        <p class="p-6">
+        <p class="p-2">
             Ученик: Пилюгин Евгений.
         </p>
-        <p class="p-6">
+        <p class="p-2">
             Преподаватель: Игорь Полуянов.
         </p>
     </div>

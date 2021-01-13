@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\NewsModel;
+use App\Models\News;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -10,7 +10,7 @@ class HomeController extends Controller
     private $data;
 
     public function __construct() {
-        $this->data = new NewsModel();
+        $this->data = new News();
     }
 
     public function index()

@@ -3,13 +3,14 @@
 
 @section('content')
     <h3>Новости из категории: {{ $name }}</h3>
-    <div class="my-8 sm:rounded-lg">
+    <div class="p-5">
         @foreach ($news as $new)
-            <div class="p-6 shadow mt-8">
-                <h4><a href="/news/{{ $new['id'] }}">{{ $new['title'] }}</a> ({{ $new['date'] }})</h4>
-                <p>{{ $new['text'] }}</p>
-                <p class="mt-8">автор: {{ $new['author_id'] }} <span class="ml-12">категория: <a
-                            href="{{ $new['category_id']['path'] }}">{{ $new['category_id']['name'] }}</a></span></p>
+            <div class="p-3 shadow mb-5">
+                <h4 class="d-flex justify-content-between mb-3"><a href="/news/{{ $new['id'] }}" class="nav-link">{{ $new['title'] }}</a>{{ $new['date'] }}</h4>
+                <p class="p-3 text-truncate fs-3">{{ $new['text'] }}</p>
+                <div class="d-flex justify-content-between">
+                    <p class="ms-3">автор: {{ $new['author_id'] }}</p><span class="ms-5">категория: <a href="{{ $new['category_id']['path'] }}">{{ $new['category_id']['name'] }}</a></span>
+                </div>
             </div>
         @endforeach
     </div>

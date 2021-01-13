@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\NewsModel;
+use App\Models\News;
 use Illuminate\Http\Request;
 
 class NewsController extends Controller
@@ -10,7 +10,7 @@ class NewsController extends Controller
     private $data;
 
     public function __construct() {
-        $this->data = new NewsModel();
+        $this->data = new News();
     }
 
     public function index()
@@ -36,10 +36,5 @@ class NewsController extends Controller
             'name' => $category['name'],
             'news' => $this->data->getNewsInCategory($category['id'])
         ]);
-    }
-
-    public function saveNews()
-    {
-        return view('news.add', ['save' => 1]);
     }
 }
