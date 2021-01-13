@@ -4,72 +4,53 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * App\Models\News
+ *
+ * @property int $id
+ * @property string $title
+ * @property string $description
+ * @property int $author_id
+ * @property string|null $source
+ * @property string|null $attach_media
+ * @property int $category_id
+ * @property mixed $status
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Category $category
+ * @method static \Illuminate\Database\Eloquent\Builder|News newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|News newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|News query()
+ * @method static \Illuminate\Database\Eloquent\Builder|News whereAttachMedia($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|News whereAuthorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|News whereCategoryId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|News whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|News whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|News whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|News whereSource($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|News whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|News whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|News whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class News extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
-    public $data;
+    protected $fillable = [
+        'title',
+        'description',
+        'author_id',
+        'source',
+        'attach_media',
+        'category_id',
+        'status'
+    ];
 
-    public function __construct(array $attributes = [])
+    public function category()
     {
-        parent::__construct($attributes);
-
-        $this->data = new Data();
-    }
-
-    public function getAllNews(): array
-    {
-
-        $arrNews = array_map([$this, 'changeIdToText'], $this->data->GetAllNews());
-
-        return array_reverse($arrNews);
-    }
-
-    public function getUser($id): ?array
-    {
-        return $this->searchInArray($this->data->getUsers(), $id);
-    }
-
-    public function getNews($id): ?array
-    {
-        return $this->searchInArray($this->GetAllNews(), $id);
-    }
-
-    public function getCategory($id): ?array
-    {
-        return $this->searchInArray($this->data->getCategories(), $id);
-    }
-
-    public function getLastThreeNews(): array
-    {
-        return array_slice($this->GetAllNews(), -0, 3);
-
-    }
-
-    public function getNewsInCategory($id): array
-    {
-        return array_filter($this->GetAllNews(), function($news) use ($id) {
-            return $news['category_id']['id'] === $id;
-        });
-    }
-
-    private function changeIdToText($arr): array
-    {
-        $arr['author_id'] = $this->getUser($arr['author_id'])['name'];
-        $arr['category_id'] = $this->getCategory($arr['category_id']);
-
-        return $arr;
-    }
-
-    private function searchInArray($arr, $search): ?array
-    {
-        foreach ($arr as $value) {
-            if ($value['id'] == $search) {
-                return $value;
-            }
-        }
-        return null;
+        return $this->belongsTo(Category::class, 'category_id');
     }
 }

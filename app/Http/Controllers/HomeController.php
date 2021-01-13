@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\News;
 use Illuminate\Http\Request;
 
@@ -15,6 +16,10 @@ class HomeController extends Controller
 
     public function index()
     {
-        return view('index', ['news' => $this->data->getLastThreeNews()]);
+        return view('index', [
+            'news' => News::query()
+                ->where('status','published')
+                ->get()
+        ]);
     }
 }
