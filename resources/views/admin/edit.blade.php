@@ -3,9 +3,9 @@
 
 @section('content')
     <div class="p-5 shadow d-flex justify-content-center flex-column align-items-center">
-        @isset($status)
-            <h3 class="text-center mb-5">{{ $status }}</h3>
-        @endisset
+        @if(session('status'))
+            <h3 class="text-center mb-5">{{ session('status') }}</h3>
+        @endif
         <form method="POST" action="/admin/edit/{{ $news->id }}" class="col-8">
             @csrf
             <div class="form-group">

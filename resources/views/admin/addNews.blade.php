@@ -3,15 +3,22 @@
 
 @section('content')
     <div class="p-5 shadow d-flex justify-content-center flex-column align-items-center">
-        @isset($status)
-            <h3 class="text-center mb-5">{{ $status }}</h3>
-        @endisset
+        @if(session('status'))
+            <h3 class="text-center mb-5">{{ session('status') }}</h3>
+        @endif
         @if(count($categories) > 0)
             <form method="POST" action="/admin/save" class="col-8">
                 @csrf
                 <input type="hidden" name="author_id" value="{{ $author_id }}">
+                <label for="category">Категория:</label>
                 <div class="form-group">
-                    <label for="category">Категория:</label>
+                    @if($errors->has('category_id'))
+                        <div class="alert alert-danger p-2">
+                            @foreach($errors->get('category_id') as $error)
+                                <p class="m-0">{{ $error }}</p>
+                            @endforeach
+                        </div>
+                    @endif
                     <select name="category_id"
                             class="form-control text-white mb-3 bg-transparent border-0 shadow-lg bg-gradient"
                             id="category">
@@ -31,11 +38,25 @@
                 </div>
                 <div class="form-group">
                     <label for="title">Заголовок:</label>
+                    @if($errors->has('title'))
+                        <div class="alert alert-danger p-2">
+                            @foreach($errors->get('title') as $error)
+                                <p class="m-0">{{ $error }}</p>
+                            @endforeach
+                        </div>
+                    @endif
                     <input class="w-100 text-white p-2 mb-3 bg-transparent border-0 shadow-lg bg-gradient" type="text"
                            name="title" id="title" placeholder="title" value="{{ old('title') }}">
                 </div>
                 <div class="form-group">
                     <label for="news">Текст:</label>
+                    @if($errors->has('description'))
+                        <div class="alert alert-danger p-2">
+                            @foreach($errors->get('description') as $error)
+                                <p class="m-0">{{ $error }}</p>
+                            @endforeach
+                        </div>
+                    @endif
                     <textarea class="form-control text-white mb-4 bg-transparent border-0 shadow-lg bg-gradient"
                               name="description"
                               rows="10" id="news">{{ old('news') }}</textarea>

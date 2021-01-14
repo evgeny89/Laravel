@@ -46,13 +46,13 @@ Route::group([
     'as' => 'admin::'
 ],
     function () {
-        Route::get('/{msg?}', [AdminController::class, 'index']);
+        Route::get('/', [AdminController::class, 'index']);
 
-        Route::get('/news/add/{msg?}', [AdminController::class, 'addNews']);
+        Route::get('/news/add/', [AdminController::class, 'addNews']);
 
         Route::post('/save', [AdminController::class, 'saveNews']);
 
-        Route::get('/category/add', [AdminController::class, 'addCategory']);
+        Route::get('/category', [AdminController::class, 'category']);
 
         Route::post('/saveCat', [AdminController::class, 'saveCategory']);
 
@@ -60,7 +60,9 @@ Route::group([
 
         Route::get('delNews/{news}/{type?}', [AdminController::class, 'delNews']);
 
-        Route::get('restore/{news}', [AdminController::class, 'restore']);
+        Route::get('restore/{delNews}', [AdminController::class, 'restore']);
+
+        Route::get('restoreCategory/{delCategory}', [AdminController::class, 'restoreCategory']);
 
         Route::get('edit/{news}', [AdminController::class, 'editNews']);
 

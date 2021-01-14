@@ -189,7 +189,7 @@ class CreateUsersTable extends Migration
                     'max_access' => 5
                 ],
                 [
-                    'name' => 'добавить категорию',
+                    'name' => 'категории',
                     'path' => '/admin/category/add',
                     'parent_id' => 5,
                     'min_access' => 3,

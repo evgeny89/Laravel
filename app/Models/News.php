@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use App\Http\Controllers\AdminController;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Request;
 
 /**
  * App\Models\News
@@ -57,20 +57,18 @@ class News extends Model
             ->orderByDesc('updated_at');
     }
 
-    public static function deleteNews(News $news, $type = 0): string
+    public static function deleteNews(\Illuminate\Http\Request $request, News $news, $type = 0)
     {
         if ($type) {
             $news->forceDelete();
-            $msg = 'Удалено полностью';
+            $request->session()->flash('status', 'Удалено полностью');
         } else {
             $news->delete();
-            $msg = 'Удалено';
+            $request->session()->flash('status', 'Удалено');
         }
-
-        return $msg;
     }
 
-    public static function deleteNewsInCategory(Category $category, $type = 0): string
+    public static function deleteNewsInCategory(Category $category, $type = 0)
     {
         $newsList = News::whereCategoryId($category->id);
 
@@ -79,6 +77,13 @@ class News extends Model
         } else {
             $newsList->delete();
         }
+    }
+
+    public static function restoreNewsInCategory(Category $category)
+    {
+        $newsList = News::onlyTrashed()->whereCategoryId($category->id);
+
+        $newsList->restore();
     }
 
     public static function publishNews(News $news, $status)
@@ -90,7 +95,7 @@ class News extends Model
 
     public function category(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(Category::class, 'category_id');
+        return $this->belongsTo(Category::class, 'category_id')->withTrashed();
     }
 
     public function author(): \Illuminate\Database\Eloquent\Relations\BelongsTo

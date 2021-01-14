@@ -3,9 +3,9 @@
 
 @section('content')
     <div class="p-4 shadow mb-5">
-        @isset($status)
-            <h3 class="text-center mb-5">{{ $status }}</h3>
-        @endisset
+        @if(session('status'))
+            <h3 class="text-center mb-5">{{ session('status') }}</h3>
+        @endif
         @forelse($news as $new)
             <div class="p-3 shadow mb-5">
                 <div class="d-flex justify-content-between mb-3">
@@ -16,11 +16,9 @@
                         </h4>
                         @if($new->deleted_at)
                             <div class="d-flex align-items-center justify-content-center">
-                                <span class="badge bg-primary">удалено: {{ $new->deleted_at }}</span>
-                                <a href="/admin/restore/{{ $new->id }}" class="nav-link">востановить</a>
+                                <span class="badge bg-warning">удалено: {{ $new->deleted_at }}</span>
                             </div>
                         @endif
-
                     </div>
                     <span>{{ $new->created_at }}</span>
                 </div>
@@ -30,13 +28,25 @@
                             href="/news/categories/{{ $new->category_id }}">{{ $new->category->name }}</a></span>
                 </div>
                 <div class="mt-3">
-                    @if($new->status === 'added')
-                        <a href="/admin/publish/{{ $new->id }}" class="nav-link badge bg-primary">опубликовать</a>
+                    @if($new->category->deleted_at)
+                        <p class="nav-link badge bg-danger">категория новости удалена</p>
                     @else
-                        <a href="/admin/publish/{{ $new->id }}/1" class="nav-link badge bg-primary">отменить публикацию</a>
+                        @if($new->status === 'added')
+                            <a href="/admin/publish/{{ $new->id }}" class="nav-link badge bg-warning">опубликовать</a>
+                        @else
+                            <a href="/admin/publish/{{ $new->id }}/1" class="nav-link badge bg-primary">отменить публикацию</a>
+                        @endif
                     @endif
                     <a href="/admin/edit/{{ $new->id }}" class="nav-link badge bg-primary">edit</a>
-                    <a href="/admin/delNews/{{ $new->id }}" class="nav-link badge bg-primary">delete soft</a>
+                        @if($new->deleted_at)
+                            @if($new->category->deleted_at)
+                                <p class="nav-link badge bg-danger">категория новости удалена</p>
+                            @else
+                                <a href="/admin/restore/{{ $new->id }}" class="nav-link badge bg-warning">востановить</a>
+                            @endif
+                        @else
+                            <a href="/admin/delNews/{{ $new->id }}" class="nav-link badge bg-primary">delete soft</a>
+                        @endif
                     <a href="/admin/delNews/{{ $new->id }}/1" class="nav-link badge bg-danger ms-3">delete hard</a>
                 </div>
             </div>
