@@ -33,7 +33,7 @@
 @endif
 
 <header class="row shadow p-3">
-    <h1 class="col-5">LOGO</h1>
+    <h1 class="col-5">Lara News</h1>
     <div class="col-7 navbar">
         <ul class="nav w-100 justify-content-between">
             @foreach ($menu as $item)
@@ -42,7 +42,7 @@
                         <a class="nav-link btn btn-secondary
                             {{ $request::is(($item->path !== '/' ? substr($item->path, 1) : $item->path)) ? 'active bg-gradient bg-primary' : '' }}"
                             href="{{ $item->path }}">{{ $item->name }}</a>
-                        @isset($item->child)
+                        @if(count($item->child))
                             <button class="btn btn-secondary dropdown-toggle dropdown-toggle-split" type="button"
                                     id="dropdownMenuButton"
                                     data-bs-toggle="dropdown" aria-expanded="false">
@@ -54,7 +54,7 @@
                                     </li>
                                 @endforeach
                             </ul>
-                        @endisset
+                        @endif
                     </li>
                 </div>
             @endforeach

@@ -24,4 +24,9 @@ class UserController extends Controller
     {
         return redirect()->route('main');
     }
+
+    public function registration(Request $request)
+    {
+        return redirect()->route('main');
+    }
 }

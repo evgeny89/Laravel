@@ -10,8 +10,6 @@ use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    private $pagination_value = 5;
-
     public function index()
     {
         return view('admin.index', [
@@ -19,7 +17,7 @@ class AdminController extends Controller
                 ->with('category')
                 ->orderBy('status')
                 ->orderByDesc('updated_at')
-                ->paginate($this->pagination_value)
+                ->paginate(parent::PAGINATION_VALUE)
         ]);
     }
 

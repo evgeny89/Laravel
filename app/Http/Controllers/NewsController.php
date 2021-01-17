@@ -7,12 +7,10 @@ use App\Models\News;
 
 class NewsController extends Controller
 {
-    private $pagination_value = 5;
-
     public function index()
     {
         return view('news.news', [
-            'news' => News::getNews()->with('category')->paginate($this->pagination_value)
+            'news' => News::getNews()->with('category')->paginate(parent::PAGINATION_VALUE)
         ]);
     }
 
@@ -33,7 +31,7 @@ class NewsController extends Controller
             'news' => News::getNews()
                 ->with('category')
                 ->where('category_id', $category->id)
-                ->paginate($this->pagination_value)
+                ->paginate(parent::PAGINATION_VALUE)
         ]);
     }
 }

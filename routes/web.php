@@ -75,6 +75,8 @@ Route::match(['GET', 'POST'], '/login', [UserController::class, 'login']);
 
 Route::get('/logout', [UserController::class, 'logout']);
 
+Route::get('/registration', [UserController::class, 'registration']);
+
 Route::get('/user/{user}', [UserController::class, 'index'])
     ->name('user');
 
