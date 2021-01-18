@@ -11,11 +11,12 @@ class Menu extends Model
 
     protected $table = 'menu';
 
-    public static function buildMenu(User $user = null)
+    public static function buildMenu($role)
     {
-        return self::where('min_access', '<=', $user->role_id ?? 1)
-            ->where('max_access', '>=', $user->role_id ?? 1)
+        return self::where('min_access', '<=', $role)
+            ->where('max_access', '>=', $role)
             ->whereNull('parent_id')
+            ->with('child')
             ->get();
     }
 

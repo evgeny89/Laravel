@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -41,46 +42,64 @@ Route::group([
     });
 
 
-Route::group([
-    'prefix' => 'admin',
-    'as' => 'admin::'
-],
-    function () {
+Route::middleware(['auth', 'moder'])
+    ->prefix('admin')
+    ->group(function () {
         Route::get('/', [AdminController::class, 'index']);
 
         Route::get('/news/add/', [AdminController::class, 'addNews']);
 
         Route::post('/save', [AdminController::class, 'saveNews']);
 
-        Route::get('/category', [AdminController::class, 'category']);
+        Route::get('/category', [AdminController::class, 'category'])
+            ->middleware('admin');
 
-        Route::post('/saveCat', [AdminController::class, 'saveCategory']);
+        Route::post('/saveCat', [AdminController::class, 'saveCategory'])
+            ->middleware('admin');
 
-        Route::get('delCategory/{category}/{type?}', [AdminController::class, 'delCategory']);
+        Route::get('delCategory/{category}/{type?}', [AdminController::class, 'delCategory'])
+            ->middleware('admin');
 
         Route::get('delNews/{news}/{type?}', [AdminController::class, 'delNews']);
 
         Route::get('restore/{delNews}', [AdminController::class, 'restore']);
 
-        Route::get('restoreCategory/{delCategory}', [AdminController::class, 'restoreCategory']);
+        Route::get('restoreCategory/{delCategory}', [AdminController::class, 'restoreCategory'])
+            ->middleware('admin');
 
         Route::get('edit/{news}', [AdminController::class, 'editNews']);
 
         Route::post('edit/{news}', [AdminController::class, 'saveEditNews']);
 
         Route::get('publish/{news}/{status?}', [AdminController::class, 'publish']);
-    });
 
-Route::match(['GET', 'POST'], '/login', [UserController::class, 'login']);
+        Route::get('users', [AdminController::class, 'getUsers'])
+            ->name('users');
 
-Route::get('/logout', [UserController::class, 'logout']);
+        Route::post('saveUser/{user}', [AdminController::class, 'saveUser']);
 
-Route::get('/registration', [UserController::class, 'registration']);
+        Route::post('savePass/{user}', [AdminController::class, 'saveUserPassword']);
 
-Route::get('/user/{user}', [UserController::class, 'index'])
-    ->name('user');
+        Route::get('delUser/{user}', [AdminController::class, 'delUser']);
+});
+
+Route::get( '/login', [LoginController::class, 'login'])->name('login');
+
+Route::post('/login', [LoginController::class, 'loginForm']);
+
+Route::get('/logout', [LoginController::class, 'logout']);
+
+Route::get( '/registration', [LoginController::class, 'registration']);
+
+Route::post( '/registration', [LoginController::class, 'regForm']);
+
+Route::get('/user/{user?}', [UserController::class, 'index'])
+    ->name('user')
+    ->middleware('auth');
 
 Route::get('/about', function () {
     return view('about');
 });
+
+Route::get('/locale/{lang}', [UserController::class, 'setUserLocale']);
 

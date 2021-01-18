@@ -18,22 +18,9 @@
 
 </head>
 <body class="container bg-dark bg-gradient text-secondary min-vh-100">
-@if (Route::has('login'))
-    <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
-        @auth
-            <a href="{{ url('/home') }}" class="text-sm text-gray-700 underline">Home</a>
-        @else
-            <a href="{{ route('login') }}" class="text-sm text-gray-700 underline">Login</a>
-
-            @if (Route::has('register'))
-                <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 underline">Register</a>
-            @endif
-        @endauth
-    </div>
-@endif
 
 <header class="row shadow p-3">
-    <h1 class="col-5">Lara News</h1>
+    <h1 class="col-4">Lara News</h1>
     <div class="col-7 navbar">
         <ul class="nav w-100 justify-content-between">
             @foreach ($menu as $item)
@@ -41,7 +28,7 @@
                     <li class="nav-item btn-group">
                         <a class="nav-link btn btn-secondary
                             {{ $request::is(($item->path !== '/' ? substr($item->path, 1) : $item->path)) ? 'active bg-gradient bg-primary' : '' }}"
-                            href="{{ $item->path }}">{{ $item->name }}</a>
+                           href="{{ $item->path }}">{{ $item->name }}</a>
                         @if(count($item->child))
                             <button class="btn btn-secondary dropdown-toggle dropdown-toggle-split" type="button"
                                     id="dropdownMenuButton"
@@ -50,7 +37,8 @@
                             <ul class="bg-secondary dropdown-menu dropdown-menu-end">
                                 @foreach ($item->child as $subItem)
                                     <li class="dropdown-item bg-secondary">
-                                        <a class="nav-link btn btn-secondary {{ $request::is(substr($subItem->path, 1)) ? 'active bg-gradient bg-primary' : '' }}" href="{{ $subItem->path }}">{{ $subItem->name }}</a>
+                                        <a class="nav-link btn btn-secondary {{ $request::is(substr($subItem->path, 1)) ? 'active bg-gradient bg-primary' : '' }}"
+                                           href="{{ $subItem->path }}">{{ $subItem->name }}</a>
                                     </li>
                                 @endforeach
                             </ul>
@@ -59,6 +47,12 @@
                 </div>
             @endforeach
         </ul>
+    </div>
+    <div class="col-1 btn-group align-items-center">
+        <a class="p-0 btn h-50 {{ app()->isLocale('ru') ? 'btn-primary text-black-50' :  'text-white bg-gradient btn-outline-primary'  }}"
+           href="/locale/ru">ru</a>
+        <a class="p-0 btn h-50 {{ app()->isLocale('en') ? 'btn-primary text-black-50' : 'text-white bg-gradient btn-outline-primary' }}"
+           href="/locale/en">en</a>
     </div>
 </header>
 <div class="row">

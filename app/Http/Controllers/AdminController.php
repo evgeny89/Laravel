@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\NewsAddRequest;
+use App\Http\Requests\SaveUserDataRequest;
 use App\Models\Category;
 use App\Models\News;
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -120,5 +123,45 @@ class AdminController extends Controller
 
         return redirect()
             ->action([AdminController::class, 'category']);
+    }
+
+    public function getUsers()
+    {
+        $users = User::where('role_id', '<', \Auth::user()->role_id)
+            ->orderByDesc('role_id')
+            ->paginate(self::PAGINATION_VALUE);
+        $roles = Role::where('id', '<', \Auth::user()->role_id)
+            ->where('id', '>', 1)
+            ->get();
+
+        return view('admin.users', ['users' => $users, 'roles' => $roles]);
+    }
+
+    public function saveUser(User $user, SaveUserDataRequest $request): RedirectResponse
+    {
+        $user->update($request->all());
+
+        return redirect()
+            ->route('users')
+            ->with('status', 'Обновлено');
+    }
+
+    public function saveUserPassword(User $user, Request $request): RedirectResponse
+    {
+        $user->password = bcrypt($request->password);
+        $user->save();
+
+        return redirect()
+            ->route('users')
+            ->with('status', 'Пароль изменен');
+    }
+
+    public function delUser(User $user): RedirectResponse
+    {
+        $user->forceDelete();
+
+        return redirect()
+            ->route('users')
+            ->with('status', 'пользователь удален из базы данных');
     }
 }

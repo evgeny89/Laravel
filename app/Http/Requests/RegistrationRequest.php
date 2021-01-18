@@ -4,14 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class NewsAddRequest extends FormRequest
+class RegistrationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize(): bool
+    public function authorize()
     {
         return true;
     }
@@ -21,13 +21,12 @@ class NewsAddRequest extends FormRequest
      *
      * @return array
      */
-    public function rules(): array
+    public function rules()
     {
         return [
-            'author_id' => 'required|exists:users,id',
-            'category_id' => 'required|exists:categories,id',
-            'title' => 'required|min:10|max:255',
-            'description' => 'required'
+            'name' => 'required|unique:users,name|min:3|max:255',
+            'email' => 'required|unique:users,email|regex:/^.+@.+$/i',
+            'password' => 'required|min:8|max:255'
         ];
     }
 
@@ -40,10 +39,8 @@ class NewsAddRequest extends FormRequest
     {
         if (app()->isLocale('ru')) {
             return [
-                'title' => 'Заголовок',
-                'description' => 'Текст',
-                'category_id' => 'Категория',
-                'author_id' => 'Автор'
+                'name' => 'Логин',
+                'email' => 'электронный адрес',
             ];
         }
         return parent::attributes();

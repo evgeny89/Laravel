@@ -11,6 +11,7 @@ class HomeController extends Controller
         return view('index', [
             'news' => News::getNews()
                 ->with('category')
+                ->with('author')
                 ->limit(5)
                 ->get()
         ]);

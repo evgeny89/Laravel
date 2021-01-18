@@ -29,10 +29,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //\Auth::attempt(['id' => '1', 'password' => '20031989']);
-        //session()->regenerate();
-        $menu = Menu::buildMenu(\Auth::user());
-
-        View::share(['menu' => $menu, 'request' => Request::class]);
+        //
     }
 }

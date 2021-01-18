@@ -10,7 +10,10 @@ class NewsController extends Controller
     public function index()
     {
         return view('news.news', [
-            'news' => News::getNews()->with('category')->paginate(parent::PAGINATION_VALUE)
+            'news' => News::getNews()
+                ->with('category')
+                ->with('author')
+                ->paginate(parent::PAGINATION_VALUE)
         ]);
     }
 
@@ -30,6 +33,7 @@ class NewsController extends Controller
             'category' => $category,
             'news' => News::getNews()
                 ->with('category')
+                ->with('author')
                 ->where('category_id', $category->id)
                 ->paginate(parent::PAGINATION_VALUE)
         ]);

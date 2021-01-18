@@ -24,7 +24,10 @@
                 </div>
                 <p class="p-4 text-truncate fs-3">{{ $new->description }}</p>
                 <div class="d-flex justify-content-between">
-                    <p class="ms-3">автор: {{ $new->author_id }}</p><span class="ms-5">категория: <a
+                    <p class="ms-3">автор:
+                        <a href="/user/{{ $new->author_id }}">{{ $new->author->name }}</a>
+                    </p>
+                    <span class="ms-5">категория: <a
                             href="/news/categories/{{ $new->category_id }}">{{ $new->category->name }}</a></span>
                 </div>
                 <div class="mt-3">

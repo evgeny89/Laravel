@@ -70,7 +70,7 @@ class CreateUsersTable extends Migration
                 ->comment('вклад участника');
             $table->bigInteger('role_id')
                 ->unsigned()
-                ->default(1)
+                ->default(2)
                 ->comment('роль (user, admin,...)');
             $table->rememberToken();
             $table->timestamps();
@@ -192,7 +192,7 @@ class CreateUsersTable extends Migration
                     'name' => 'категории',
                     'path' => '/admin/category',
                     'parent_id' => 5,
-                    'min_access' => 3,
+                    'min_access' => 4,
                     'max_access' => 5
                 ],
                 [
@@ -203,10 +203,24 @@ class CreateUsersTable extends Migration
                     'max_access' => 1
                 ],
                 [
-                    'name' => 'Выход',
-                    'path' => '/logout',
+                    'name' => 'личный кабинет',
+                    'path' => '/user',
                     'parent_id' => null,
                     'min_access' => 2,
+                    'max_access' => 5
+                ],
+                [
+                    'name' => 'Выход',
+                    'path' => '/logout',
+                    'parent_id' => 9,
+                    'min_access' => 2,
+                    'max_access' => 5
+                ],
+                [
+                    'name' => 'Пользователи',
+                    'path' => '/admin/users',
+                    'parent_id' => 5,
+                    'min_access' => 4,
                     'max_access' => 5
                 ]
             ]
