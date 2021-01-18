@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use PhpParser\Node\Expr\Cast\Object_;
+use Illuminate\Http\Request;
 
 /**
  * App\Models\Category
@@ -30,6 +31,19 @@ class Category extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = ['name'];
+
+    public static function deleteCategory(Request $request, Category $category, $type)
+    {
+        News::deleteNewsInCategory($category, $type);
+
+        if ($type) {
+            $category->forceDelete();
+            $request->session()->flash('status', 'Категория '. $category->name .' Удалена полностью');
+        } else {
+            $category->delete();
+            $request->session()->flash('status', 'Категория '. $category->name .' Удалена');
+        }
+    }
 
     public function news(): object
     {

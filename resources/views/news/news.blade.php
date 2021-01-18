@@ -2,7 +2,7 @@
 @section('title', 'Список новостей')
 
 @section('content')
-    <div class="p-4 shadow mb-5">
+    <div class="p-4">
         @forelse($news as $new)
             <div class="p-3 shadow mb-5">
                 <h4 class="d-flex justify-content-between mb-3"><a href="news/{{ $new->id }}" class="nav-link">{{ $new->title }}</a> <span>{{ $new->created_at }}</span></h4>
@@ -14,5 +14,8 @@
         @empty
             <div class="p-3 shadow mb-5">Новостей нет</div>
         @endforelse
+    </div>
+    <div class="mb-5 pb-5">
+        {{ $news->links('vendor.pagination.bootstrap-4') }}
     </div>
 @endsection

@@ -189,7 +189,7 @@ class CreateUsersTable extends Migration
                     'max_access' => 5
                 ],
                 [
-                    'name' => 'добавить категорию',
+                    'name' => 'категории',
                     'path' => '/admin/category/add',
                     'parent_id' => 5,
                     'min_access' => 3,
@@ -197,14 +197,14 @@ class CreateUsersTable extends Migration
                 ],
                 [
                     'name' => 'Вход',
-                    'path' => '/auth',
+                    'path' => '/login',
                     'parent_id' => null,
                     'min_access' => 1,
                     'max_access' => 1
                 ],
                 [
                     'name' => 'Выход',
-                    'path' => '/auth',
+                    'path' => '/logout',
                     'parent_id' => null,
                     'min_access' => 2,
                     'max_access' => 5
