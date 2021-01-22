@@ -38,11 +38,12 @@ class Category extends Model
 
         if ($type) {
             $category->forceDelete();
-            $request->session()->flash('status', 'Категория '. $category->name .' Удалена полностью');
+            $msg = 'Удалена полностью';
         } else {
             $category->delete();
-            $request->session()->flash('status', 'Категория '. $category->name .' Удалена');
+            $msg = 'Удалена';
         }
+        $request->session()->flash('status', 'Категория '. $category->name .' '. $msg);
     }
 
     public function news(): object

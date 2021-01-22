@@ -9,7 +9,10 @@
                 <h4 class="d-flex justify-content-between mb-3"><a href="/news/{{ $new->id }}" class="nav-link">{{ $new->title }}</a>{{ $new->created_at }}</h4>
                 <p class="p-3 text-truncate fs-3">{{ $new->description }}</p>
                 <div class="d-flex justify-content-between">
-                    <p class="ms-3">автор: {{ $new->author_id }}</p><span class="ms-5">категория: {{ $new->category->name }}</span>
+                    <p class="ms-3">автор:
+                        <a href="/user/{{ $new->author_id }}">{{ $new->author->name }}</a>
+                    </p>
+                    <span class="ms-5">категория: {{ $new->category->name }}</span>
                 </div>
             </div>
         @empty

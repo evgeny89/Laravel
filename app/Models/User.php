@@ -2,10 +2,15 @@
 
 namespace App\Models;
 
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegistrationRequest;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * App\Models\User
@@ -50,6 +55,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role_id',
     ];
 
     /**
@@ -71,8 +77,41 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function userNews()
+    public static function logout(Request $request)
     {
-        return $this->hasMany(News::class, 'author_id');
+        Auth::logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+    }
+
+    public static function registration(RegistrationRequest $request)
+    {
+        $user = new User;
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+
+        $user->save();
+    }
+
+    public static function login(LoginRequest $request): \Illuminate\Http\RedirectResponse
+    {
+        $credentials = $request->only('name', 'password');
+
+        if (Auth::attempt($credentials, $request->remember)) {
+            $request->session()->regenerate();
+
+            return redirect()->intended('user/');
+        }
+
+        return back()->withInput();
+    }
+
+    public function news(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(News::class, 'author_id')->with('category');
     }
 }

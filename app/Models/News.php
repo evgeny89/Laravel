@@ -61,11 +61,12 @@ class News extends Model
     {
         if ($type) {
             $news->forceDelete();
-            $request->session()->flash('status', 'Удалено полностью');
+            $msg = 'Удалено полностью';
         } else {
             $news->delete();
-            $request->session()->flash('status', 'Удалено');
+            $msg = 'Удалено';
         }
+        $request->session()->flash('status', $msg);
     }
 
     public static function deleteNewsInCategory(Category $category, $type = 0)
