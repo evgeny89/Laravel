@@ -30,12 +30,12 @@ class LoginController extends Controller
     public function regForm(RegistrationRequest $request)
     {
         if ($request->isMethod('POST')) {
-            User::registration($request);
+            $user = User::registration($request);
+
+            Auth::login($user);
 
             return redirect()
-                ->route('login')
-                ->with('status', 'Вы успешно зарегистрированы')
-                ->withInput();
+                ->route('user');
         }
 
         abort(400);

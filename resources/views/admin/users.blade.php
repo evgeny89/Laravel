@@ -14,17 +14,17 @@
                             <a href="/user/{{ $user->id }}" class="nav-link">{{ $user->name }}</a>
                         </h4>
                         <div class="m-3 d-flex">
-                            <a href="/admin/delUser/{{ $user->id }}" class="nav-link badge bg-danger">удалить</a>
+                            <a href="/admin/delUser/{{ $user->id }}" class="nav-link badge bg-danger">{{ __('messages.pages.admin.hardDelete') }}</a>
                         </div>
                     </div>
                    <div class="d-flex align-items-center">
                        <button type="button" class="btn btn-primary mx-2" data-bs-toggle="modal"
                                data-bs-target="#editUserPass{{ $user->id }}">
-                           Изменить пароль
+                           {{ __('messages.pages.admin.changePassword') }}
                        </button>
                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                data-bs-target="#editUser{{ $user->id }}">
-                           Редактировать данные
+                           {{ __('messages.pages.admin.editUser') }}
                        </button>
                        <div class="modal fade" id="editUserPass{{ $user->id }}" tabindex="-1"
                             aria-labelledby="exampleModalLabel"
@@ -40,7 +40,7 @@
                                        <form method="post" action="/admin/savePass/{{ $user->id }}">
                                            @csrf
                                            <div class="mb-3">
-                                               <label for="login{{ $user->id }}" class="form-label">Новый пароль</label>
+                                               <label for="login{{ $user->id }}" class="form-label">{{ __('messages.pages.admin.newPassword') }}</label>
                                                <input type="text" name="password" class="form-control"
                                                       id="login{{ $user->id }}">
                                                @if($errors->has('password'))
@@ -52,7 +52,7 @@
                                                @endif
                                            </div>
                                            <div class="d-grid justify-content-end">
-                                               <button class="btn btn-primary px-4">save</button>
+                                               <button class="btn btn-primary px-4">{{ __('messages.pages.admin.save') }}</button>
                                            </div>
                                        </form>
                                    </div>
@@ -73,7 +73,7 @@
                                        <form method="post" action="/admin/saveUser/{{ $user->id }}">
                                            @csrf
                                            <div class="mb-3">
-                                               <label for="login{{ $user->id }}" class="form-label">Login</label>
+                                               <label for="login{{ $user->id }}" class="form-label">{{ __('messages.pages.other.login') }}</label>
                                                <input type="text" name="name" class="form-control"
                                                       id="login{{ $user->id }}"
                                                       value="{{ $user->name }}">
@@ -86,7 +86,7 @@
                                                @endif
                                            </div>
                                            <div class="mb-3">
-                                               <label for="email{{ $user->id }}" class="form-label">Email address</label>
+                                               <label for="email{{ $user->id }}" class="form-label">{{ __('messages.pages.other.email') }}</label>
                                                <input type="email" name="email" class="form-control"
                                                       id="email{{ $user->id }}"
                                                       value="{{ $user->email }}">
@@ -99,8 +99,7 @@
                                                @endif
                                            </div>
                                            <div class="mb-3">
-                                               <label for="role{{ $user->id }}" class="form-label">Роль
-                                                   пользователя</label>
+                                               <label for="role{{ $user->id }}" class="form-label">{{ __('messages.pages.admin.role') }}</label>
                                                <select class="form-select" id="role{{ $user->id }}" name="role_id">
                                                    @foreach($roles as $role)
                                                        <option value="{{ $role->id }}"
@@ -118,7 +117,7 @@
                                                @endif
                                            </div>
                                            <div class="d-grid justify-content-end">
-                                               <button class="btn btn-primary px-4">save</button>
+                                               <button class="btn btn-primary px-4">{{ __('messages.pages.admin.save') }}</button>
                                            </div>
                                        </form>
                                    </div>
@@ -129,7 +128,7 @@
                 </div>
             </div>
         @empty
-            <div class="p-3 shadow mb-5">Пользователи не найдены</div>
+            <div class="p-3 shadow mb-5">{{ __('messages.pages.admin.notUser') }}</div>
         @endforelse
     </div>
     <div class="mb-5 pb-5">

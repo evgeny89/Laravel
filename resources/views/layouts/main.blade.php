@@ -28,7 +28,7 @@
                     <li class="nav-item btn-group">
                         <a class="nav-link btn btn-secondary
                             {{ $request::is(($item->path !== '/' ? substr($item->path, 1) : $item->path)) ? 'active bg-gradient bg-primary' : '' }}"
-                           href="{{ $item->path }}">{{ $item->name }}</a>
+                           href="{{ $item->path }}">{{ __('menu.'. $item->name) }}</a>
                         @if(count($item->child))
                             <button class="btn btn-secondary dropdown-toggle dropdown-toggle-split" type="button"
                                     id="dropdownMenuButton"
@@ -38,7 +38,7 @@
                                 @foreach ($item->child as $subItem)
                                     <li class="dropdown-item bg-secondary">
                                         <a class="nav-link btn btn-secondary {{ $request::is(substr($subItem->path, 1)) ? 'active bg-gradient bg-primary' : '' }}"
-                                           href="{{ $subItem->path }}">{{ $subItem->name }}</a>
+                                           href="{{ $subItem->path }}">{{ __('menu.'. $subItem->name) }}</a>
                                     </li>
                                 @endforeach
                             </ul>

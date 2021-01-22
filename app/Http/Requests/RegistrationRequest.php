@@ -37,12 +37,8 @@ class RegistrationRequest extends FormRequest
      */
     public function attributes(): array
     {
-        if (app()->isLocale('ru')) {
-            return [
-                'name' => 'Логин',
-                'email' => 'электронный адрес',
-            ];
-        }
-        return parent::attributes();
+        return [
+            'name' => __('validation.attributes.login'),
+        ];
     }
 }

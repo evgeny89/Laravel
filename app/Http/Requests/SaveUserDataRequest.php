@@ -29,4 +29,16 @@ class SaveUserDataRequest extends FormRequest
             'role_id' => 'required|numeric'
         ];
     }
+
+    /**
+     * Get the validation attributes that apply to the request
+     *
+     * @return array
+     */
+    public function attributes(): array
+    {
+        return [
+            'name' => __('validation.attributes.login'),
+        ];
+    }
 }

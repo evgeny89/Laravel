@@ -10,8 +10,8 @@
                     {{ $news->description }}
                 </p>
                 <div class="d-flex justify-content-between">
-                    <p>автор: <a href="/user/{{ $news->author_id }}">{{ $news->author->name }}</a></p>
-                    <span class="ms-5">категория:
+                    <p>{{ __('messages.pages.news.author') }} <a href="/user/{{ $news->author_id }}">{{ $news->author->name }}</a></p>
+                    <span class="ms-5">{{ __('messages.pages.news.category') }}
                         <a href="/news/categories/{{ $news->category_id }}">{{ $news->category->name }}</a>
                     </span>
                 </div>

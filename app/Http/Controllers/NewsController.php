@@ -24,7 +24,11 @@ class NewsController extends Controller
 
     public function getCategories()
     {
-        return view('news.categories', ['categories' => Category::withCount('news')->get()]);
+        return view('news.categories', [
+            'categories' => Category::withCount('news')
+                ->orderByDesc('news_count')
+                ->get()
+        ]);
     }
 
     public function getCategory(Category $category)

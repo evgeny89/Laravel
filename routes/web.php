@@ -4,6 +4,8 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\ParserController;
+use App\Http\Controllers\SocialController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -76,16 +78,25 @@ Route::middleware(['auth', 'moder'])
         Route::get('users', [AdminController::class, 'getUsers'])
             ->name('users');
 
-        Route::post('saveUser/{user}', [AdminController::class, 'saveUser']);
+        Route::post('saveUser/{user}', [AdminController::class, 'saveUser'])
+            ->middleware('user-access');
 
         Route::post('savePass/{user}', [AdminController::class, 'saveUserPassword']);
 
         Route::get('delUser/{user}', [AdminController::class, 'delUser']);
+
+        Route::get('parser/{name}', [ParserController::class, 'initParser'])
+            ->name('parser');
 });
 
-Route::get( '/login', [LoginController::class, 'login'])->name('login');
+Route::get( '/login', [LoginController::class, 'login'])
+    ->name('login');
 
 Route::post('/login', [LoginController::class, 'loginForm']);
+
+Route::get('login/social/{name}', [SocialController::class, 'indexLogin']);
+
+Route::get('social/{name}', [SocialController::class, 'redirect']);
 
 Route::get('/logout', [LoginController::class, 'logout']);
 

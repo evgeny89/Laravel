@@ -10,7 +10,7 @@
             <form method="POST" action="/admin/save" class="col-8">
                 @csrf
                 <input type="hidden" name="author_id" value="{{ $author_id }}">
-                <label for="category">Категория:</label>
+                <label for="category">{{ __('messages.pages.news.category') }}</label>
                 <div class="form-group">
                     @if($errors->has('category_id'))
                         <div class="alert alert-danger p-2">
@@ -32,12 +32,12 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="source">Источник:</label>
+                    <label for="source">{{ __('messages.pages.news.source') }}</label>
                     <input class="w-100 text-white p-2 mb-3 bg-transparent border-0 shadow-lg bg-gradient" type="text"
                            name="source" id="source" placeholder="source" value="{{ old('source') }}">
                 </div>
                 <div class="form-group">
-                    <label for="title">Заголовок:</label>
+                    <label for="title">{{ __('messages.pages.news.title') }}</label>
                     @if($errors->has('title'))
                         <div class="alert alert-danger p-2">
                             @foreach($errors->get('title') as $error)
@@ -49,7 +49,7 @@
                            name="title" id="title" placeholder="title" value="{{ old('title') }}">
                 </div>
                 <div class="form-group">
-                    <label for="news">Текст:</label>
+                    <label for="news">{{ __('messages.pages.news.text') }}</label>
                     @if($errors->has('description'))
                         <div class="alert alert-danger p-2">
                             @foreach($errors->get('description') as $error)
@@ -66,8 +66,8 @@
         @else
                 <div class="m-2 list-group-item bg-transparent border-0 shadow-lg bg-gradient">
                     <h4 class="d-flex justify-content-between align-items-center">
-                        Нет ни одной категории!
-                        <a href="/admin/category/add" class="nav-link">Добавить категорию</a>
+                        {{ __('messages.pages.admin.notCategory') }}
+                        <a href="/admin/category/add" class="nav-link">{{ __('messages.pages.admin.addCategory') }}</a>
                     </h4>
                 </div>
         @endif

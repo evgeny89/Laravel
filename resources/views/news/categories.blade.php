@@ -2,7 +2,7 @@
 @section('title', 'Список категорий')
 
 @section('content')
-    <h3 class="p-2">Категории:</h3>
+    <h3 class="p-2">{{ __('messages.pages.news.categories') }}</h3>
     <div class="p-3 list-group">
         @forelse ($categories as $cat)
             <div class="m-2 list-group-item bg-transparent border-0 shadow-lg bg-gradient">
@@ -12,7 +12,7 @@
                 </h4>
             </div>
         @empty
-            <div class="p-3 shadow mb-5">Категорий нет</div>
+            <div class="p-3 shadow mb-5">{{ __('messages.pages.news.notCategory') }}</div>
         @endforelse
     </div>
 @endsection

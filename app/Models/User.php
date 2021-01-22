@@ -11,6 +11,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Socialite\Facades\Socialite;
 
 /**
  * App\Models\User
@@ -95,6 +96,8 @@ class User extends Authenticatable
         $user->password = Hash::make($request->password);
 
         $user->save();
+
+        return $user;
     }
 
     public static function login(LoginRequest $request): \Illuminate\Http\RedirectResponse
@@ -108,6 +111,42 @@ class User extends Authenticatable
         }
 
         return back()->withInput();
+    }
+
+    public static function getUsers($paginate)
+    {
+        $users = User::where('role_id', '<', \Auth::user()->role_id)
+            ->orderByDesc('role_id')
+            ->paginate($paginate);
+        $roles = Role::where('id', '<', \Auth::user()->role_id)
+            ->where('id', '>', 1)
+            ->get();
+
+        return ['users' => $users, 'roles' => $roles];
+    }
+
+    public static function socialRegistrationUser($name, Request $request)
+    {
+        $response = Socialite::driver($name)->user();
+
+        if (\Auth::user()) {
+            $user = \Auth::user();
+
+            $user->social_id = $response->id;
+            $user->social_name = $name;
+
+        } else {
+            $user = new User();
+            $user->name = $response->nickname;
+            $user->social_id = $response->id;
+            $user->social_name = $name;
+            $user->email = $response->email;
+        }
+
+        $user->save();
+        $request->session()->regenerate();
+
+        return redirect()->route('user');
     }
 
     public function news(): \Illuminate\Database\Eloquent\Relations\HasMany

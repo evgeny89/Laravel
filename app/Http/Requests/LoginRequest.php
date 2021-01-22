@@ -11,7 +11,7 @@ class LoginRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -21,7 +21,7 @@ class LoginRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'name' => 'required|min:3|max:255',
@@ -37,12 +37,9 @@ class LoginRequest extends FormRequest
      */
     public function attributes(): array
     {
-        if (app()->isLocale('ru')) {
-            return [
-                'name' => 'Логин',
-                'remember' => 'Чекбокс'
+        return [
+                'name' => __('validation.attributes.login'),
+                'remember' => __('validation.attributes.remember'),
             ];
-        }
-        return parent::attributes();
     }
 }
