@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Repository\ParserRepository;
+use App\Services\ParserService;
 
 class ParserController extends Controller
 {
@@ -11,18 +11,18 @@ class ParserController extends Controller
     public function initParser($resourceName): \Illuminate\Http\RedirectResponse
     {
         if (method_exists($this, $resourceName)) {
-            return $this->{$resourceName}(new ParserRepository());
+            return $this->{$resourceName}(new ParserService());
         }
         return back();
     }
 
-    private function lenta(ParserRepository $repository): \Illuminate\Http\RedirectResponse
+    private function lenta(ParserService $parser)
     {
-        return $repository->parseLentaNews();
+        return $parser->parseLentaNews();
     }
 
-    private function yandex(ParserRepository $repository): \Illuminate\Http\RedirectResponse
+    private function yandex(ParserService $parser)
     {
-        return $repository->parseYandexNews();
+        return $parser->parseYandexNews();
     }
 }

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
+use phpDocumentor\Reflection\Types\Self_;
 
 /**
  * App\Models\User
@@ -125,21 +126,34 @@ class User extends Authenticatable
         return ['users' => $users, 'roles' => $roles];
     }
 
-    public static function socialRegistrationUser($name, Request $request)
+    public static function socialLoginUser($name, Request $request)
     {
         $response = Socialite::driver($name)->user();
+        $response->social_name = $name;
 
-        if (\Auth::user()) {
-            $user = \Auth::user();
+        $user = User::whereSocialId($response->getId());
+
+        if($user->exists()) {
+            Auth::login($user->first());
+            return redirect()->route('user');
+        }
+
+        return self::socialRegistrationUser($response, $request);
+    }
+
+    public static function socialRegistrationUser($response, Request $request)
+    {
+        if (Auth::user()) {
+            $user = Auth::user();
 
             $user->social_id = $response->id;
-            $user->social_name = $name;
+            $user->social_name = $response->social_name;
 
         } else {
             $user = new User();
             $user->name = $response->nickname;
             $user->social_id = $response->id;
-            $user->social_name = $name;
+            $user->social_name = $response->social_name;
             $user->email = $response->email;
         }
 

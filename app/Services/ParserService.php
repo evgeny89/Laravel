@@ -1,16 +1,17 @@
 <?php
 
 
-namespace App\Repository;
+namespace App\Services;
 
 
 use App\Http\Controllers\AdminController;
+use App\Jobs\NewsParser;
 use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Orchestra\Parser\Xml\Facade as XmlParser;
 
-class ParserRepository
+class ParserService
 {
     const LENTA = 'https://lenta.ru/rss/news';
     const YANDEX = [
@@ -44,38 +45,17 @@ class ParserRepository
         $newsArray = array_map([$this, 'callbackNews'], $news['items']);
 
         $this->multiSaveInDatabase($newsArray, 'news');
-
-        return redirect()->action([AdminController::class, 'index']);
     }
-    public function parseYandexNews()
+
+    public function parseYandexNews(): \Illuminate\Http\RedirectResponse
     {
-        $result = [
-            'source' => 'yandex.ru',
-            'items' => []
-        ];
-
         foreach ($this::YANDEX as $category) {
-            $xml = XmlParser::load($category);
-            $news = $xml->parse([
-                'source' => ['uses' => 'channel.title'],
-                'items' => ['uses' => 'channel.item[title,description]']
-            ]);
-
-            preg_match('/\s(.*)$/', $news['source'], $match);
-            $category = $match[1];
-
-            $news['items'] = array_map(function ($item) use ($category) {
-                $item['category'] = $category;
-                return $item;
-            }, $news['items']);
-
-            $result['items'] = array_merge($result['items'], $news['items']);
+           NewsParser::dispatch($category);
         }
-
-        return $this->saveParseNews($result);
+        return back();
     }
 
-    public function parseLentaNews()
+    public function parseLentaNews(): \Illuminate\Http\RedirectResponse
     {
         $xml = XmlParser::load($this::LENTA);
         $news = $xml->parse([
@@ -83,7 +63,29 @@ class ParserRepository
             'items' => ['uses' => 'channel.item[title,description,category]']
         ]);
 
-        return $this->saveParseNews($news);
+        $this->saveParseNews($news);
+        return back();
+    }
+
+    public function yandexParsingJob($link)
+    {
+        $xml = XmlParser::load($link);
+        $news = $xml->parse([
+            'source' => ['uses' => 'channel.title'],
+            'items' => ['uses' => 'channel.item[title,description]']
+        ]);
+
+        preg_match('/\s(.*)$/', $news['source'], $match);
+        $category = $match[1];
+
+        $news['source'] = 'yandex.ru';
+
+        $news['items'] = array_map(function ($item) use ($category) {
+            $item['category'] = $category;
+            return $item;
+        }, $news['items']);
+
+        $this->saveParseNews($news);
     }
 
     private function callbackCategory($item): array
