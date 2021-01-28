@@ -85,7 +85,7 @@ Route::middleware(['auth', 'moder'])
 
         Route::get('delUser/{user}', [AdminController::class, 'delUser']);
 
-        Route::get('parser/{name}', [ParserController::class, 'initParser'])
+        Route::get('parser', [ParserController::class, 'parser'])
             ->name('parser');
 });
 

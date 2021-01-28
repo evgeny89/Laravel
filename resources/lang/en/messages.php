@@ -69,7 +69,6 @@ return [
             'notCategory'       => 'not categories!',
             'addCategory'       => 'add new category',
             'failAccessUser'    => 'insufficient rights to perform this operation',
-            'lenta'             => 'download news from Lenta.ru',
             'yandex'            => 'download news from Yandex.ru',
         ],
         'personal' => [
