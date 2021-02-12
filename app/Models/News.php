@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Str;
 
 /**
  * App\Models\News
@@ -61,10 +62,10 @@ class News extends Model
     {
         if ($type) {
             $news->forceDelete();
-            $msg = 'Удалено полностью';
+            $msg = __('messages.news.deletedHard');
         } else {
             $news->delete();
-            $msg = 'Удалено';
+            $msg = __('messages.news.deleted', ['name' => Str::limit($news->title, 20)]);
         }
         $request->session()->flash('status', $msg);
     }

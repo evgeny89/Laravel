@@ -180,6 +180,15 @@ return [
          */
         Barryvdh\Debugbar\ServiceProvider::class,
 
+        /*
+         * Parser
+         */
+        Orchestra\Parser\XmlServiceProvider::class,
+
+        /*
+         * Steam
+         */
+        \SocialiteProviders\Manager\ServiceProvider::class
     ],
 
     /*
@@ -232,7 +241,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
-
+        'XmlParser' => Orchestra\Parser\Xml\Facade::class,
     ],
 
 ];

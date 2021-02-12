@@ -38,14 +38,11 @@ class NewsAddRequest extends FormRequest
      */
     public function attributes(): array
     {
-        if (app()->isLocale('ru')) {
             return [
-                'title' => 'Заголовок',
-                'description' => 'Текст',
-                'category_id' => 'Категория',
-                'author_id' => 'Автор'
+                'title' => __('validation.attributes.heading'),
+                'description' => __('validation.attributes.article'),
+                'category_id' => __('validation.attributes.category'),
+                'author_id' => __('validation.attributes.author')
             ];
-        }
-        return parent::attributes();
     }
 }

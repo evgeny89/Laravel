@@ -61,10 +61,12 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')
+                ->nullable()
                 ->unique();
             $table->timestamp('email_verified_at')
                 ->nullable();
-            $table->string('password');
+            $table->string('password')
+                ->nullable();
             $table->integer('rank')
                 ->default(0)
                 ->comment('вклад участника');
@@ -72,6 +74,11 @@ class CreateUsersTable extends Migration
                 ->unsigned()
                 ->default(2)
                 ->comment('роль (user, admin,...)');
+            $table->bigInteger('social_id')
+                ->unique()
+                ->nullable();
+            $table->string('social_name')
+                ->nullable();
             $table->rememberToken();
             $table->timestamps();
 
@@ -84,7 +91,9 @@ class CreateUsersTable extends Migration
 
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')
+                ->unique()
+                ->index();
             $table->softDeletes();
             $table->timestamps();
         });
@@ -95,7 +104,8 @@ class CreateUsersTable extends Migration
                 ->unique();
             $table->text('description');
             $table->bigInteger('author_id')
-                ->unsigned();
+                ->unsigned()
+                ->default(1);
             $table->string('source')
                 ->nullable();
             $table->string('attach_media')
@@ -147,28 +157,28 @@ class CreateUsersTable extends Migration
         DB::table('menu')->insert(
             [
                 [
-                    'name' => 'главная',
+                    'name' => 'main',
                     'path' => '/',
                     'parent_id' => null,
                     'min_access' => 1,
                     'max_access' => 5
                 ],
                 [
-                    'name' => 'новости',
+                    'name' => 'news',
                     'path' => '/news',
                     'parent_id' => null,
                     'min_access' => 1,
                     'max_access' => 5
                 ],
                 [
-                    'name' => 'категории',
+                    'name' => 'categories',
                     'path' => '/news/categories',
                     'parent_id' => 2,
                     'min_access' => 1,
                     'max_access' => 5
                 ],
                 [
-                    'name' => 'о нас',
+                    'name' => 'about',
                     'path' => '/about',
                     'parent_id' => null,
                     'min_access' => 1,
@@ -182,42 +192,42 @@ class CreateUsersTable extends Migration
                     'max_access' => 5
                 ],
                 [
-                    'name' => 'добавить новость',
+                    'name' => 'addNews',
                     'path' => '/admin/news/add',
                     'parent_id' => 5,
                     'min_access' => 3,
                     'max_access' => 5
                 ],
                 [
-                    'name' => 'категории',
+                    'name' => 'categories',
                     'path' => '/admin/category',
                     'parent_id' => 5,
                     'min_access' => 4,
                     'max_access' => 5
                 ],
                 [
-                    'name' => 'Вход',
+                    'name' => 'login',
                     'path' => '/login',
                     'parent_id' => null,
                     'min_access' => 1,
                     'max_access' => 1
                 ],
                 [
-                    'name' => 'личный кабинет',
+                    'name' => 'personalArea',
                     'path' => '/user',
                     'parent_id' => null,
                     'min_access' => 2,
                     'max_access' => 5
                 ],
                 [
-                    'name' => 'Выход',
+                    'name' => 'logout',
                     'path' => '/logout',
                     'parent_id' => 9,
                     'min_access' => 2,
                     'max_access' => 5
                 ],
                 [
-                    'name' => 'Пользователи',
+                    'name' => 'users',
                     'path' => '/admin/users',
                     'parent_id' => 5,
                     'min_access' => 4,

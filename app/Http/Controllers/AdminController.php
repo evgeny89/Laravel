@@ -10,6 +10,7 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
@@ -18,6 +19,7 @@ class AdminController extends Controller
         return view('admin.index', [
             'news' => News::withTrashed()
                 ->with('category')
+                ->with('author')
                 ->orderBy('status')
                 ->orderByDesc('updated_at')
                 ->paginate(parent::PAGINATION_VALUE)
@@ -28,7 +30,7 @@ class AdminController extends Controller
     {
         return view('admin.addNews', [
             'categories' => Category::get(),
-            'author_id' => rand(1, 10)
+            'author_id' => \Auth::id()
         ]);
     }
 
@@ -45,7 +47,7 @@ class AdminController extends Controller
 
         return redirect()
             ->action([AdminController::class, 'index'])
-            ->with('status', 'Сохранено');
+            ->with('status', __('messages.saved'));
     }
 
     public function saveCategory(Request $request): RedirectResponse
@@ -57,7 +59,7 @@ class AdminController extends Controller
 
             return redirect()
                 ->action([AdminController::class, 'category'])
-                ->with('status', 'Сохранено');
+                ->with('status', __('messages.saved'));
         }
 
         return back()->withInput();
@@ -69,14 +71,15 @@ class AdminController extends Controller
 
         return redirect()
             ->action([AdminController::class, 'index'])
-            ->with('status', 'Изменено');
+            ->with('status', __('messages.changed'));
     }
 
     public function editNews(News $news)
     {
         return view('admin.edit', [
             'categories' => Category::get(),
-            'news' => $news
+            'news' => $news,
+            'author_id' => Auth::id()
         ]);
     }
 
@@ -86,7 +89,7 @@ class AdminController extends Controller
 
         return redirect()
             ->action([AdminController::class, 'index'])
-            ->with('status', 'Статус изменен');
+            ->with('status', __('messages.status.changed'));
     }
 
     public function restore(News $news): RedirectResponse
@@ -95,7 +98,7 @@ class AdminController extends Controller
 
         return redirect()
             ->action([AdminController::class, 'index'])
-            ->with('status', 'Востановлено');
+            ->with('status', __('messages.restored'));
     }
 
     public function restoreCategory(Category $category): RedirectResponse
@@ -106,7 +109,7 @@ class AdminController extends Controller
 
         return redirect()
             ->action([AdminController::class, 'category'])
-            ->with('status', 'Категория '. $category->name .' Востановлена');
+            ->with('status', __('messages.category.restored', ['name' => $category->name]));
     }
 
     public function delNews(Request $request, News $news, $type = 0): RedirectResponse
@@ -127,14 +130,9 @@ class AdminController extends Controller
 
     public function getUsers()
     {
-        $users = User::where('role_id', '<', \Auth::user()->role_id)
-            ->orderByDesc('role_id')
-            ->paginate(self::PAGINATION_VALUE);
-        $roles = Role::where('id', '<', \Auth::user()->role_id)
-            ->where('id', '>', 1)
-            ->get();
+        $result = User::getUsers(self::PAGINATION_VALUE);
 
-        return view('admin.users', ['users' => $users, 'roles' => $roles]);
+        return view('admin.users', $result);
     }
 
     public function saveUser(User $user, SaveUserDataRequest $request): RedirectResponse
@@ -143,7 +141,7 @@ class AdminController extends Controller
 
         return redirect()
             ->route('users')
-            ->with('status', 'Обновлено');
+            ->with('status', __('messages.updated'));
     }
 
     public function saveUserPassword(User $user, Request $request): RedirectResponse
@@ -153,7 +151,7 @@ class AdminController extends Controller
 
         return redirect()
             ->route('users')
-            ->with('status', 'Пароль изменен');
+            ->with('status', __('messages.passwordChanged'));
     }
 
     public function delUser(User $user): RedirectResponse
@@ -162,6 +160,6 @@ class AdminController extends Controller
 
         return redirect()
             ->route('users')
-            ->with('status', 'пользователь удален из базы данных');
+            ->with('status', __('messages.userDeleted'));
     }
 }

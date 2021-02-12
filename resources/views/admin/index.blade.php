@@ -6,6 +6,10 @@
         @if(session('status'))
             <h3 class="text-center mb-5">{{ session('status') }}</h3>
         @endif
+        <div class="p-3 shadow mb-5">
+            <a href="{{ route('parser', ['name' => 'lenta']) }}" class="mx-2">{{ __('messages.pages.admin.lenta') }}</a>
+            <a href="{{ route('parser', ['name' => 'yandex']) }}" class="mx-2">{{ __('messages.pages.admin.yandex') }}</a>
+        </div>
         @forelse($news as $new)
             <div class="p-3 shadow mb-5">
                 <div class="d-flex justify-content-between mb-3">
@@ -16,7 +20,7 @@
                         </h4>
                         @if($new->deleted_at)
                             <div class="d-flex align-items-center justify-content-center">
-                                <span class="badge bg-warning">удалено: {{ $new->deleted_at }}</span>
+                                <span class="badge bg-warning">{{ __('messages.pages.admin.deleted', ['data' => $new->deleted_at]) }}</span>
                             </div>
                         @endif
                     </div>
@@ -24,37 +28,37 @@
                 </div>
                 <p class="p-4 text-truncate fs-3">{{ $new->description }}</p>
                 <div class="d-flex justify-content-between">
-                    <p class="ms-3">автор:
+                    <p class="ms-3">{{ __('messages.pages.news.author') }}
                         <a href="/user/{{ $new->author_id }}">{{ $new->author->name }}</a>
                     </p>
-                    <span class="ms-5">категория: <a
+                    <span class="ms-5">{{ __('messages.pages.news.category') }} <a
                             href="/news/categories/{{ $new->category_id }}">{{ $new->category->name }}</a></span>
                 </div>
                 <div class="mt-3">
                     @if($new->category->deleted_at)
-                        <p class="nav-link badge bg-danger">категория новости удалена</p>
+                        <p class="nav-link badge bg-danger">{{ __('messages.pages.admin.categoryIsDeleted') }}</p>
                     @else
                         @if($new->status === 'added')
-                            <a href="/admin/publish/{{ $new->id }}" class="nav-link badge bg-warning">опубликовать</a>
+                            <a href="/admin/publish/{{ $new->id }}" class="nav-link badge bg-warning">{{ __('messages.pages.admin.publish') }}</a>
                         @else
-                            <a href="/admin/publish/{{ $new->id }}/1" class="nav-link badge bg-primary">отменить публикацию</a>
+                            <a href="/admin/publish/{{ $new->id }}/1" class="nav-link badge bg-primary">{{ __('messages.pages.admin.cancelPublish') }}</a>
                         @endif
                     @endif
-                    <a href="/admin/edit/{{ $new->id }}" class="nav-link badge bg-primary">edit</a>
+                    <a href="/admin/edit/{{ $new->id }}" class="nav-link badge bg-primary">{{ __('messages.pages.admin.edit') }}</a>
                         @if($new->deleted_at)
                             @if($new->category->deleted_at)
-                                <p class="nav-link badge bg-danger">категория новости удалена</p>
+                                <p class="nav-link badge bg-danger">{{ __('messages.pages.admin.categoryIsDeleted') }}</p>
                             @else
-                                <a href="/admin/restore/{{ $new->id }}" class="nav-link badge bg-warning">востановить</a>
+                                <a href="/admin/restore/{{ $new->id }}" class="nav-link badge bg-warning">{{ __('messages.pages.admin.restore') }}</a>
                             @endif
                         @else
-                            <a href="/admin/delNews/{{ $new->id }}" class="nav-link badge bg-primary">delete soft</a>
+                            <a href="/admin/delNews/{{ $new->id }}" class="nav-link badge bg-primary">{{ __('messages.pages.admin.softDelete') }}</a>
                         @endif
-                    <a href="/admin/delNews/{{ $new->id }}/1" class="nav-link badge bg-danger ms-3">delete hard</a>
+                    <a href="/admin/delNews/{{ $new->id }}/1" class="nav-link badge bg-danger ms-3">{{ __('messages.pages.admin.hardDelete') }}</a>
                 </div>
             </div>
         @empty
-            <div class="p-3 shadow mb-5">Новостей нет</div>
+            <div class="p-3 shadow mb-5">{{ __('messages.pages.main.notNews') }}</div>
         @endforelse
     </div>
     <div class="mb-5 pb-5">

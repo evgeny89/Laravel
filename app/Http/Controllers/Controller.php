@@ -11,5 +11,5 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    const PAGINATION_VALUE = 5;
+    const PAGINATION_VALUE = 10;
 }
