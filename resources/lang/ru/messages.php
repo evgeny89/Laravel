@@ -69,7 +69,6 @@ return [
             'notCategory'       => 'нет ниодной категории!',
             'addCategory'       => 'добавить категорию',
             'failAccessUser'    => 'не хватает прав для выполнения этой операции',
-            'lenta'             => 'загрузить новости с Lenta.ru',
             'yandex'            => 'загрузить новости с Yandex.ru',
         ],
         'personal' => [

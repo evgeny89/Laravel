@@ -16,7 +16,9 @@
         "laravel/framework": "^8.12",
         "laravel/tinker": "^2.5",
         "orchestra/parser": "^6.0",
-        "socialiteproviders/steam": "^4.1"
+        "predis/predis": "^1.1",
+        "socialiteproviders/steam": "^4.1",
+        "ext-json": "*"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.5",

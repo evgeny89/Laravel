@@ -130,7 +130,6 @@ class CreateUsersTable extends Migration
                 ->onDelete('cascade');
         });
 
-
         DB::table('roles')->insert([
             [
                 'name' => 'guest',

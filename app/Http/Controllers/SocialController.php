@@ -15,6 +15,6 @@ class SocialController extends Controller
 
     public function redirect($name, Request $request)
     {
-        return User::socialRegistrationUser($name, $request);
+        return User::socialLoginUser($name, $request);
     }
 }

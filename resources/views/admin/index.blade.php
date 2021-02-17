@@ -7,8 +7,7 @@
             <h3 class="text-center mb-5">{{ session('status') }}</h3>
         @endif
         <div class="p-3 shadow mb-5">
-            <a href="{{ route('parser', ['name' => 'lenta']) }}" class="mx-2">{{ __('messages.pages.admin.lenta') }}</a>
-            <a href="{{ route('parser', ['name' => 'yandex']) }}" class="mx-2">{{ __('messages.pages.admin.yandex') }}</a>
+            <a href="{{ route('parser') }}" class="mx-2">{{ __('messages.pages.admin.yandex') }}</a>
         </div>
         @forelse($news as $new)
             <div class="p-3 shadow mb-5">
